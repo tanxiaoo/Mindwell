@@ -51,19 +51,22 @@ The AI validates feelings, listens empathetically, and offers gentle guidance, w
 
 ## Standard Message Flow
 
-```mermaid
-flowchart TD
-    A[User sends message in Flutter] --> B[Write message to Firestore]
-    B --> C[Firestore triggers Cloud Function: onUserMessageCreate]
-    C --> D[Load chat history & last emotion]
-    D --> E[detectUserEmotion]
-    E --> F[buildAIRequestPrompt<br/>System Prompt with history and emotion]
-    F --> G[callGeminiAPI]
-    G --> H[validateAIResponse]
-    H --> I[Write AI reply & new emotion to Firestore]
-    I --> J[Flutter listens to Firestore updates]
-    J --> K[Display AI reply & updated emotion]
-```
+User sends message in Flutter
+          v
+Flutter writes message to Firestore
+          v
+Firestore triggers Cloud Function: onUserMessageCreate
+          v
+Cloud Function:
+  1. Load chat history & last emotion
+  2. detectUserEmotion (new emotion)
+  3. buildAIRequestPrompt (System Prompt + history + new emotion)
+  4. callGeminiAPI
+  5. validateAIResponse
+  6. Write AI reply & new emotion to Firestore
+          v
+Flutter listens to Firestore updates → Display AI reply & updated emotion
+
 
 ## System Artecture
 
