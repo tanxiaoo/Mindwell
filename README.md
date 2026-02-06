@@ -57,7 +57,7 @@ flowchart TD
     B --> C[Firestore triggers Cloud Function: onUserMessageCreate]
     C --> D[Load chat history & last emotion]
     D --> E[detectUserEmotion]
-    E --> F[buildAIRequestPrompt (System Prompt + history + new emotion)]
+    E --> F[buildAIRequestPrompt<br/>System Prompt with history and emotion]
     F --> G[callGeminiAPI]
     G --> H[validateAIResponse]
     H --> I[Write AI reply & new emotion to Firestore]
