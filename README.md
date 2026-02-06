@@ -52,10 +52,13 @@ The AI validates feelings, listens empathetically, and offers gentle guidance, w
 ## Standard Message Flow
 
 User sends message in Flutter
+          |
           v
 Flutter writes message to Firestore
+          |
           v
 Firestore triggers Cloud Function: onUserMessageCreate
+          |
           v
 Cloud Function:
   1. Load chat history & last emotion
@@ -64,6 +67,7 @@ Cloud Function:
   4. callGeminiAPI
   5. validateAIResponse
   6. Write AI reply & new emotion to Firestore
+          |
           v
 Flutter listens to Firestore updates → Display AI reply & updated emotion
 
