@@ -49,6 +49,27 @@ The AI validates feelings, listens empathetically, and offers gentle guidance, w
 - **Database:** Firebase Firestore (stores chat history and context)  
 - **AI:** Gemini API (Free Tier)
 
+## Standard Message Flow
+
+```mermaid
+flowchart TD
+    A[User sends message in Flutter] --> B[Write message to Firestore]
+    B --> C[Firestore triggers Cloud Function: onUserMessageCreate]
+    C --> D[Load chat history & last emotion]
+    D --> E[detectUserEmotion]
+    E --> F[buildAIRequestPrompt (System Prompt + history + new emotion)]
+    F --> G[callGeminiAPI]
+    G --> H[validateAIResponse]
+    H --> I[Write AI reply & new emotion to Firestore]
+    I --> J[Flutter listens to Firestore updates]
+    J --> K[Display AI reply & updated emotion]
+```
+
+## System Artecture
+
+
+
+
 ## Getting Started
 
 1. Clone this repository  
