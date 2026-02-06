@@ -51,25 +51,29 @@ The AI validates feelings, listens empathetically, and offers gentle guidance, w
 
 ## Standard Message Flow
 
-User sends message in Flutter
-          |
-          v
-Flutter writes message to Firestore
-          |
-          v
-Firestore triggers Cloud Function: onUserMessageCreate
-          |
-          v
-Cloud Function:
-  1. Load chat history & last emotion
-  2. detectUserEmotion (new emotion)
-  3. buildAIRequestPrompt (System Prompt + history + new emotion)
-  4. callGeminiAPI
-  5. validateAIResponse
-  6. Write AI reply & new emotion to Firestore
-          |
-          v
-Flutter listens to Firestore updates → Display AI reply & updated emotion
+
+1. **User sends message in Flutter**
+   - User types a message in the chat interface.
+
+2. **Flutter writes message to Firestore**
+   - Message is saved in the user's chat collection:
+     ```
+     users/{userId}/chats/{messageId}
+     ```
+     
+3. **Firestore triggers Cloud Function: onUserMessageCreate**
+   - Cloud Function is triggered automatically on new message creation.
+
+4. **Cloud Function processing**
+   1. Load chat history & last emotion from Firestore.
+   2. detectUserEmotion → analyze the new message to get updated user emotion.
+   3. buildAIRequestPrompt → combine system prompt, chat history, and new emotion.
+   4. callGeminiAPI → generate AI reply using the Gemini model.
+   5. validateAIResponse → check AI reply for compliance (no diagnosis, no medical advice).
+   6. Write AI reply & new emotion back to Firestore.
+
+5. **Flutter listens to Firestore updates**
+   - Displays AI reply and updates user's emotion in real-time.
 
 
 ## System Artecture
